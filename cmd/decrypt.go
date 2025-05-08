@@ -20,9 +20,9 @@ var decryptCmd = &cobra.Command{
 		outputPath, _ := cmd.Flags().GetString("out")
 		password, _ := cmd.Flags().GetString("password")
 
-		// Input reader
+		// Use stdin if inputPath is not set
 		var in io.Reader
-		if inputPath == "" {
+		if inputPath == "" || inputPath == "-" {
 			in = os.Stdin
 		} else {
 			f, err := os.Open(inputPath)
@@ -33,9 +33,9 @@ var decryptCmd = &cobra.Command{
 			in = f
 		}
 
-		// Output writer
+		// Use stdout if outputPath is not set
 		var out io.Writer
-		if outputPath == "" {
+		if outputPath == "" || outputPath == "-" {
 			out = os.Stdout
 		} else {
 			f, err := os.Create(outputPath)
@@ -71,8 +71,5 @@ func init() {
 	decryptCmd.Flags().StringP("in", "i", "", "Input file (default: stdin)")
 	decryptCmd.Flags().StringP("out", "o", "", "Output file (default: stdout)")
 	decryptCmd.Flags().StringP("password", "p", "", "Password to derive encryption key")
-
-	_ = decryptCmd.MarkFlagRequired("in")
-	_ = decryptCmd.MarkFlagRequired("out")
 	_ = decryptCmd.MarkFlagRequired("password")
 }
