@@ -161,3 +161,59 @@ func randomInt(xmin, xmax int) int {
 	_, _ = rand.Read(b)
 	return xmin + int(b[0])%(xmax-xmin)
 }
+
+// benchmark
+// go test -bench=. -benchmem -gcflags=-m github.com/hashmap-kz/streaming-compress-encrypt/pkg/crypt/aesgcm
+
+func BenchmarkChunkedGCM_Encrypt(b *testing.B) {
+	b.ReportAllocs()
+
+	data := bytes.Repeat([]byte("A"), 16*1024*1024) // 16 MiB input
+	password := "benchmark-secret"
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		var out bytes.Buffer
+		crypter := NewChunkedGCMCrypter(password)
+
+		w, err := crypter.Encrypt(&out)
+		if err != nil {
+			b.Fatalf("Encrypt setup failed: %v", err)
+		}
+
+		if _, err := io.Copy(w, bytes.NewReader(data)); err != nil {
+			b.Fatalf("Encrypt failed: %v", err)
+		}
+		if err := w.Close(); err != nil {
+			b.Fatalf("Encrypt close failed: %v", err)
+		}
+	}
+}
+
+func BenchmarkChunkedGCM_Decrypt(b *testing.B) {
+	b.ReportAllocs()
+
+	data := bytes.Repeat([]byte("A"), 16*1024*1024) // 16 MiB input
+	password := "benchmark-secret"
+
+	// Encrypt once before benchmark to reuse ciphertext
+	var buf bytes.Buffer
+	crypter := NewChunkedGCMCrypter(password)
+	w, _ := crypter.Encrypt(&buf)
+	_, _ = io.Copy(w, bytes.NewReader(data))
+	_ = w.Close()
+	encryptedData := buf.Bytes()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		r := bytes.NewReader(encryptedData)
+		crypter := NewChunkedGCMCrypter(password)
+		decReader, err := crypter.Decrypt(r)
+		if err != nil {
+			b.Fatalf("Decrypt setup failed: %v", err)
+		}
+		if _, err := io.Copy(io.Discard, decReader); err != nil {
+			b.Fatalf("Decrypt failed: %v", err)
+		}
+	}
+}
