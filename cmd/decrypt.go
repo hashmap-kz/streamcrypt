@@ -14,7 +14,7 @@ import (
 
 var decryptCmd = &cobra.Command{
 	Use:   "decrypt",
-	Short: "Decrypt and optionally decompress an input stream",
+	Short: "Decrypt and decompress an input stream",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		inputPath, _ := cmd.Flags().GetString("in")
 		outputPath, _ := cmd.Flags().GetString("out")

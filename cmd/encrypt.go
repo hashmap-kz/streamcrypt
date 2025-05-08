@@ -14,7 +14,7 @@ import (
 
 var encryptCmd = &cobra.Command{
 	Use:   "encrypt",
-	Short: "Compress and optionally encrypt an input stream",
+	Short: "Compress and encrypt an input stream",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		inputPath, _ := cmd.Flags().GetString("in")
 		outputPath, _ := cmd.Flags().GetString("out")
