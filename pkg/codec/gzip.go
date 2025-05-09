@@ -12,7 +12,7 @@ type GzipCompressor struct{}
 var _ Compressor = &GzipCompressor{}
 
 func (GzipCompressor) FileExtension() string {
-	return ".gz"
+	return GzipFileExt
 }
 
 func (GzipCompressor) NewWriter(w io.Writer) (WriteFlushCloser, error) {
@@ -21,7 +21,7 @@ func (GzipCompressor) NewWriter(w io.Writer) (WriteFlushCloser, error) {
 }
 
 func (GzipCompressor) Name() string {
-	return "gzip"
+	return GzipCompName
 }
 
 type gzipWrapper struct {

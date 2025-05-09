@@ -3,7 +3,8 @@ package codec
 import "io"
 
 const (
-	GzipFileExt = ".gz"
+	GzipFileExt  = ".gz"
+	GzipCompName = "gzip"
 )
 
 type Flusher interface {
