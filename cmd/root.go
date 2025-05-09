@@ -5,9 +5,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:          "compenc",
+	Use:          "streamcrypt",
 	Short:        "A CLI tool for compressing and encrypting files",
-	Long:         `compenc is a flexible tool for compression and encryption of file streams using a pipeline-based architecture.`,
+	Long:         `streamcrypt is a flexible tool for compression and encryption of file streams using a pipeline-based architecture.`,
 	SilenceUsage: true,
 }
 
