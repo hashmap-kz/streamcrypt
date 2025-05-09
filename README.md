@@ -3,6 +3,13 @@
 A fast and composable Go library and CLI tool for streaming compression and encryption. Designed for large file
 processing pipelines, backups, and secure data storage or transfer.
 
+[![License](https://img.shields.io/github/license/hashmap-kz/streamcrypt)](https://github.com/hashmap-kz/streamcrypt/blob/master/LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hashmap-kz/streamcrypt)](https://goreportcard.com/report/github.com/hashmap-kz/streamcrypt)
+[![Workflow Status](https://img.shields.io/github/actions/workflow/status/hashmap-kz/streamcrypt/ci.yml?branch=master)](https://github.com/hashmap-kz/streamcrypt/actions/workflows/ci.yml?query=branch:master)
+[![GitHub Issues](https://img.shields.io/github/issues/hashmap-kz/streamcrypt)](https://github.com/hashmap-kz/streamcrypt/issues)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/hashmap-kz/streamcrypt)](https://github.com/hashmap-kz/streamcrypt/blob/master/go.mod#L3)
+[![Latest Release](https://img.shields.io/github/v/release/hashmap-kz/streamcrypt)](https://github.com/hashmap-kz/streamcrypt/releases/latest)
+
 ---
 
 ## ✨ Features
@@ -13,6 +20,32 @@ processing pipelines, backups, and secure data storage or transfer.
 - ✅ Chunked encryption: safer and faster on large inputs
 - ✅ Clean, testable design with `io.Reader/io.Writer` pipelines
 - ✅ CLI support via `cobra`
+
+---
+
+## 🚀 Installation
+
+### Manual Installation
+
+1. Download the latest binary for your platform from
+   the [Releases page](https://github.com/hashmap-kz/streamcrypt/releases).
+2. Place the binary in your system's `PATH` (e.g., `/usr/local/bin`).
+
+### Installation script for Unix-Based OS _(requires: tar, curl, jq)_:
+
+```bash
+(
+set -euo pipefail
+
+OS="$(uname | tr '[:upper:]' '[:lower:]')"
+ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+TAG="$(curl -s https://api.github.com/repos/hashmap-kz/streamcrypt/releases/latest | jq -r .tag_name)"
+
+curl -L "https://github.com/hashmap-kz/streamcrypt/releases/download/${TAG}/streamcrypt_${TAG}_${OS}_${ARCH}.tar.gz" |
+tar -xzf - -C /usr/local/bin && \
+chmod +x /usr/local/bin/streamcrypt
+)
+```
 
 ---
 
