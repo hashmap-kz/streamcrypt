@@ -1,4 +1,4 @@
-module github.com/hashmap-kz/streaming-compress-encrypt
+module github.com/hashmap-kz/streamcrypt
 
 go 1.24.1
 

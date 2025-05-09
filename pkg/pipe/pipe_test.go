@@ -11,8 +11,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/codec"
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/crypt/aesgcm"
+	"github.com/hashmap-kz/streamcrypt/pkg/codec"
+	"github.com/hashmap-kz/streamcrypt/pkg/crypt/aesgcm"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -8,7 +8,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/crypt"
+	"github.com/hashmap-kz/streamcrypt/pkg/crypt"
 
 	"golang.org/x/crypto/argon2"
 )

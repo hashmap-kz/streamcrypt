@@ -5,10 +5,10 @@ import (
 	"io"
 	"os"
 
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/crypt/aesgcm"
+	"github.com/hashmap-kz/streamcrypt/pkg/crypt/aesgcm"
 
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/codec"
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/pipe"
+	"github.com/hashmap-kz/streamcrypt/pkg/codec"
+	"github.com/hashmap-kz/streamcrypt/pkg/pipe"
 	"github.com/spf13/cobra"
 )
 

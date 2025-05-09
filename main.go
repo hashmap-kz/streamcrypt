@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/hashmap-kz/streaming-compress-encrypt/cmd"
+	"github.com/hashmap-kz/streamcrypt/cmd"
 )
 
 func main() {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/codec"
-	"github.com/hashmap-kz/streaming-compress-encrypt/pkg/crypt"
+	"github.com/hashmap-kz/streamcrypt/pkg/codec"
+	"github.com/hashmap-kz/streamcrypt/pkg/crypt"
 )
 
 // --- Pipeline ---
