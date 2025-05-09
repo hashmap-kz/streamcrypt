@@ -5,6 +5,8 @@ import "io"
 const (
 	GzipFileExt  = ".gz"
 	GzipCompName = "gzip"
+	ZstdFileExt  = ".zst"
+	ZstdCompName = "zstd"
 )
 
 type Flusher interface {
