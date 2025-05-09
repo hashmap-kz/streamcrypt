@@ -23,7 +23,7 @@ var decryptCmd = &cobra.Command{
 		// Use stdin if inputPath is not set
 		var in io.Reader
 		if inputPath == "" || inputPath == "-" {
-			in = os.Stdin
+			in = cmd.InOrStdin()
 		} else {
 			f, err := os.Open(inputPath)
 			if err != nil {
@@ -36,7 +36,7 @@ var decryptCmd = &cobra.Command{
 		// Use stdout if outputPath is not set
 		var out io.Writer
 		if outputPath == "" || outputPath == "-" {
-			out = os.Stdout
+			out = cmd.OutOrStdout()
 		} else {
 			f, err := os.Create(outputPath)
 			if err != nil {
