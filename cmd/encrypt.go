@@ -5,10 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/hashmap-kz/streamcrypt/pkg/crypt/aesgcm"
+	"github.com/hashmap-kz/streamcrypt/pkg/boot"
 
-	"github.com/hashmap-kz/streamcrypt/pkg/codec"
-	"github.com/hashmap-kz/streamcrypt/pkg/pipe"
 	"github.com/spf13/cobra"
 )
 
@@ -46,13 +44,7 @@ var encryptCmd = &cobra.Command{
 			out = f
 		}
 
-		// Compression setup
-		compressor := codec.GzipCompressor{}
-
-		// Encryption setup
-		crypter := aesgcm.NewChunkedGCMCrypter(password)
-
-		r, err := pipe.CompressAndEncryptOptional(in, compressor, crypter)
+		r, err := boot.Encrypt(in, password)
 		if err != nil {
 			return fmt.Errorf("pipeline setup failed: %w", err)
 		}

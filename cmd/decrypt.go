@@ -5,10 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/hashmap-kz/streamcrypt/pkg/crypt/aesgcm"
+	"github.com/hashmap-kz/streamcrypt/pkg/boot"
 
-	"github.com/hashmap-kz/streamcrypt/pkg/codec"
-	"github.com/hashmap-kz/streamcrypt/pkg/pipe"
 	"github.com/spf13/cobra"
 )
 
@@ -46,13 +44,7 @@ var decryptCmd = &cobra.Command{
 			out = f
 		}
 
-		// Decompression setup
-		decompressor := codec.GzipDecompressor{}
-
-		// Decryption setup
-		crypter := aesgcm.NewChunkedGCMCrypter(password)
-
-		r, err := pipe.DecryptAndDecompressOptional(in, crypter, decompressor)
+		r, err := boot.Decrypt(in, password)
 		if err != nil {
 			return fmt.Errorf("pipeline setup failed: %w", err)
 		}
