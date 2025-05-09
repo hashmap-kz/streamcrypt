@@ -37,6 +37,45 @@ cat plain.txt | streamcrypt encrypt --password "s3cr3t" > secret.gz.aes
 cat secret.gz.aes | streamcrypt decrypt --password "s3cr3t" > plain.txt
 ```
 
+### 💻 Usage as a Library
+
+You can use `streamcrypt` directly in your Go code as a streaming compression/encryption library:
+
+```
+import (
+    "bytes"
+    "io"
+    "log"
+
+    "github.com/hashmap-kz/streamcrypt/pkg/boot"
+)
+
+func encryptAndDecryptExample() {
+    input := []byte("stream me securely")
+    password := "s3cr3t"
+
+    // Encrypt
+    encReader, err := boot.Encrypt(bytes.NewReader(input), password)
+    if err != nil {
+        log.Fatal("encryption failed:", err)
+    }
+
+    // Decrypt
+    decReader, err := boot.Decrypt(encReader, password)
+    if err != nil {
+        log.Fatal("decryption failed:", err)
+    }
+    defer decReader.Close()
+
+    output, err := io.ReadAll(decReader)
+    if err != nil {
+        log.Fatal("read failed:", err)
+    }
+
+    log.Printf("Decrypted content: %s", string(output))
+}
+```
+
 ---
 
 ## 🧩 Project Structure
