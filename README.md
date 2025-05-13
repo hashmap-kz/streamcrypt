@@ -25,37 +25,66 @@ processing pipelines, backups, and secure data storage or transfer.
 You can use `streamcrypt` directly in your Go code as a streaming compression/encryption library:
 
 ```
-import (
-    "bytes"
-    "io"
-    "log"
+// Having a typical storage intefrace (impl may be any: s3, sftp, etc...)
 
-    "github.com/hashmap-kz/streamcrypt/pkg/boot"
-)
+type Storage interface {
+	PutObject(ctx context.Context, path string, r io.Reader) error
+	ReadObject(ctx context.Context, path string) (io.ReadCloser, error)
+}
 
-func encryptAndDecryptExample() {
-    input := []byte("stream me securely")
-    password := "s3cr3t"
+// Having a 'repo', that wraps conpression/encryption on streams: 
 
-    // Encrypt
-    encReader, err := boot.Encrypt(bytes.NewReader(input), password)
-    if err != nil {
-        log.Fatal("encryption failed:", err)
-    }
+type repoImpl struct {
+	storage    storage.Storage  // required: e.g. LocalImpl()
+	compressor codec.Compressor // optional
+	crypter    crypt.Crypter    // optional
+}
 
-    // Decrypt
-    decReader, err := boot.Decrypt(encReader, password)
-    if err != nil {
-        log.Fatal("decryption failed:", err)
-    }
-    defer decReader.Close()
+func (repo *repoImpl) PutObject(ctx context.Context, path string, r io.Reader) (string, error) {
+	var err error
+	fullPath := repo.encodePath(path)
 
-    output, err := io.ReadAll(decReader)
-    if err != nil {
-        log.Fatal("read failed:", err)
-    }
+	// Compress and encrypt
+	encReader, err := pipe.CompressAndEncryptOptional(r, repo.compressor, repo.crypter)
+	if err != nil {
+		return "", err
+	}
 
-    log.Printf("Decrypted content: %s", string(output))
+	// Store in repo
+	err = repo.storage.PutObject(ctx, fullPath, encReader)
+	if err != nil {
+		return "", err
+	}
+
+	return fullPath, nil
+}
+
+func (repo *repoImpl) ReadObject(ctx context.Context, path string) (io.ReadCloser, error) {
+	var err error
+	fullPath := repo.encodePath(path)
+
+	// Open() that needs to be closed
+	obj, err := repo.storage.ReadObject(ctx, fullPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var dec codec.Decompressor
+	if repo.compressor != nil {
+		dec = codec.GetDecompressor(repo.compressor)
+		if dec == nil {
+			obj.Close()
+			return nil, fmt.Errorf("cannot decide decompressor for: %s", repo.compressor.FileExtension())
+		}
+	}
+
+	readCloser, err := pipe.DecryptAndDecompressOptional(obj, repo.crypter, dec)
+	if err != nil {
+		obj.Close()
+		return nil, err
+	}
+
+	return ioutils.NewMultiCloser(readCloser, obj, readCloser), nil
 }
 ```
 
