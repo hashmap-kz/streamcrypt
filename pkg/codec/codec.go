@@ -36,6 +36,8 @@ func GetDecompressor(c Compressor) Decompressor {
 	switch c.FileExtension() {
 	case GzipFileExt:
 		return &GzipDecompressor{}
+	case ZstdFileExt:
+		return &ZstdDecompressor{}
 	default:
 		return nil
 	}

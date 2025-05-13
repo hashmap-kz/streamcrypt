@@ -201,8 +201,10 @@ func BenchmarkChunkedGCM_Decrypt(b *testing.B) {
 	// Encrypt once before benchmark to reuse ciphertext
 	var buf bytes.Buffer
 	crypter := NewChunkedGCMCrypter(password)
-	w, _ := crypter.Encrypt(&buf)
-	_, _ = io.Copy(w, bytes.NewReader(data))
+	w, err := crypter.Encrypt(&buf)
+	require.NoError(b, err)
+	_, err = io.Copy(w, bytes.NewReader(data))
+	require.NoError(b, err)
 	_ = w.Close()
 	encryptedData := buf.Bytes()
 
@@ -247,8 +249,13 @@ func TestChunkedGCMCrypto_DecryptCorrupted(t *testing.T) {
 	var buf bytes.Buffer
 
 	crypter := NewChunkedGCMCrypter("pw")
-	w, _ := crypter.Encrypt(&buf)
-	w.Write(data)
+	w, err := crypter.Encrypt(&buf)
+	require.NoError(t, err)
+	_, err = w.Write(data)
+	require.NoError(t, err)
+	if err != nil {
+		return
+	}
 	w.Close()
 
 	cipher := buf.Bytes()
@@ -264,7 +271,8 @@ func TestChunkedGCMCrypto_EmptyInput(t *testing.T) {
 	var buf bytes.Buffer
 	crypter := NewChunkedGCMCrypter("pw")
 
-	w, _ := crypter.Encrypt(&buf)
+	w, err := crypter.Encrypt(&buf)
+	require.NoError(t, err)
 	w.Close()
 
 	r, err := crypter.Decrypt(bytes.NewReader(buf.Bytes()))
@@ -278,8 +286,10 @@ func TestChunkedGCMCrypto_EmptyInput(t *testing.T) {
 func TestChunkedGCMCrypto_PartialChunkDecryption(t *testing.T) {
 	var buf bytes.Buffer
 	crypter := NewChunkedGCMCrypter("pw")
-	w, _ := crypter.Encrypt(&buf)
-	w.Write([]byte("short"))
+	w, err := crypter.Encrypt(&buf)
+	require.NoError(t, err)
+	_, err = w.Write([]byte("short"))
+	require.NoError(t, err)
 	w.Close()
 
 	encrypted := buf.Bytes()
