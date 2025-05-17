@@ -3,9 +3,9 @@ package boot
 import (
 	"io"
 
-	"github.com/hashmap-kz/streamcrypt/pkg/codec"
-	"github.com/hashmap-kz/streamcrypt/pkg/crypt/aesgcm"
-	"github.com/hashmap-kz/streamcrypt/pkg/pipe"
+	"github.com/hashmap-kz/streamcrypt/v1/pkg/codec"
+	"github.com/hashmap-kz/streamcrypt/v1/pkg/crypt/aesgcm"
+	"github.com/hashmap-kz/streamcrypt/v1/pkg/pipe"
 )
 
 func Encrypt(in io.Reader, password string) (io.Reader, error) {

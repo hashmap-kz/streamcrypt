@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/hashmap-kz/streamcrypt/pkg/boot"
+	"github.com/hashmap-kz/streamcrypt/v1/pkg/boot"
 
 	"github.com/spf13/cobra"
 )
