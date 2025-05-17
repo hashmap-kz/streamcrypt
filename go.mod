@@ -1,4 +1,4 @@
-module github.com/hashmap-kz/streamcrypt
+module github.com/hashmap-kz/streamcrypt/v1
 
 go 1.24.1
 
