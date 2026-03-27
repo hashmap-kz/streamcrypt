@@ -159,7 +159,6 @@ func randomInt(xmin, xmax int) int {
 		return xmin
 	}
 	b := make([]byte, 4)
-	//nolint:errcheck
 	_, _ = rand.Read(b)
 	return xmin + int(b[0])%(xmax-xmin)
 }
