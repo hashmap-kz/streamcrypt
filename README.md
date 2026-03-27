@@ -12,15 +12,15 @@ processing pipelines, backups, and secure data storage or transfer.
 
 ---
 
-## ✨ Features
+## Features
 
-- ✅ Stream-based compression and encryption (no full reads into memory)
-- ✅ Pluggable compressors (`gzip`, `zstd`)
-- ✅ Pluggable encryption backends (default: `AES-256-GCM` with Argon2 key derivation)
-- ✅ Chunked encryption: safer and faster on large inputs
-- ✅ Clean, testable design with `io.Reader/io.Writer` pipelines
+- Stream-based compression and encryption (no full reads into memory)
+- Pluggable compressors (`gzip`, `zstd`)
+- Pluggable encryption backends (default: `AES-256-GCM` with Argon2 key derivation)
+- Chunked encryption: safer and faster on large inputs
+- Clean, testable design with `io.Reader/io.Writer` pipelines
 
-### 💻 Usage
+### Usage
 
 You can use `streamcrypt` directly in your Go code as a streaming compression/encryption library:
 
@@ -90,7 +90,7 @@ func (repo *repoImpl) ReadObject(ctx context.Context, path string) (io.ReadClose
 
 ---
 
-## 🧩 Project Structure
+## Project Structure
 
 | Package   | Purpose                                    |
 |-----------|--------------------------------------------|
@@ -101,7 +101,7 @@ func (repo *repoImpl) ReadObject(ctx context.Context, path string) (io.ReadClose
 
 ---
 
-## 🔐 Security
+## Security
 
 - Uses **AES-256-GCM** for authenticated encryption
 - Keys are derived via **Argon2id** with a random salt
@@ -109,12 +109,12 @@ func (repo *repoImpl) ReadObject(ctx context.Context, path string) (io.ReadClose
 
 ---
 
-## 📄 License
+## License
 
 MIT License. See [LICENSE](./LICENSE) for details.
 
 ---
 
-## 🙌 Acknowledgements
+## Acknowledgements
 
 - [`filippo.io/age`](https://pkg.go.dev/filippo.io/age) – for inspiration
