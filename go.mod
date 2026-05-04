@@ -3,7 +3,7 @@ module github.com/hashmap-kz/streamcrypt
 go 1.25.0
 
 require (
-	github.com/klauspost/compress v1.18.5
+	github.com/klauspost/compress v1.18.6
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/crypto v0.50.0
 )
